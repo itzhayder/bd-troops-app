@@ -1,0 +1,28 @@
+{
+  "name": "bd-troops",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "engines": {
+    "node": "10.16.3",
+    "npm": "6.9.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "client": "npm run start --prefix client",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "Md. Hayder Ali",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "clash-of-clans-api": "^0.6.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}

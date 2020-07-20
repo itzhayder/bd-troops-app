@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.bf34331e.chunk.css",
+    "main.js": "/static/js/main.f04f00c3.chunk.js",
+    "main.js.map": "/static/js/main.f04f00c3.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.784c586e.js",
+    "runtime-main.js.map": "/static/js/runtime-main.784c586e.js.map",
+    "static/js/2.56d40905.chunk.js": "/static/js/2.56d40905.chunk.js",
+    "static/js/2.56d40905.chunk.js.map": "/static/js/2.56d40905.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.bb1d8972559df68d51eb77331bd8d0e4.js": "/precache-manifest.bb1d8972559df68d51eb77331bd8d0e4.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.bf34331e.chunk.css.map": "/static/css/main.bf34331e.chunk.css.map",
+    "static/js/2.56d40905.chunk.js.LICENSE.txt": "/static/js/2.56d40905.chunk.js.LICENSE.txt",
+    "static/media/current-war-hero.png": "/static/media/current-war-hero.96908c79.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.784c586e.js",
+    "static/js/2.56d40905.chunk.js",
+    "static/css/main.bf34331e.chunk.css",
+    "static/js/main.f04f00c3.chunk.js"
+  ]
+}
