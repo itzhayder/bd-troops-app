@@ -1,11 +1,11 @@
 import React from "react";
 
 const topDonators = (props) => {
-  const memberList = props.memberList.sort((a, b) => b.donations - a.donations);
+  const memberList = props.memberList.sort((a, b) => b.donations - a.donations).slice(0, 5);
 
   const topDonators = memberList.map((member, i) => {
     return (
-      <tr>
+      <tr key={i}>
         <th scope="row" className="text-center fontSemiBold">
           {i + 1}
         </th>

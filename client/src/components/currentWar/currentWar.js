@@ -5,7 +5,8 @@ import Hero from "../../images/current-war-hero.png";
 
 const currentWar = (props) => {
   let title = "";
-  let previousResult = "";
+  let previousResult = 'Victory';
+  let bgColor = 'bgVictory';
 
   if (props.currentWar.state === "preparation") {
     title = "Preparation Day";
@@ -17,8 +18,7 @@ const currentWar = (props) => {
 
   if (props.warlog.items[0].result !== "win") {
     previousResult = "Defeat";
-  } else {
-    previousResult = "Victory";
+    bgColor = 'bgDefeat';
   }
 
   return (
@@ -118,7 +118,7 @@ const currentWar = (props) => {
                 </button>
               </div>
               <div className="jumbotron jumbotronSelf overflow-hidden">
-                <div className="text-white py-2 text-center bgVictory fontSemiBold">
+                <div className={`text-white py-2 text-center ${bgColor} fontSemiBold`}>
                   {previousResult}
                 </div>
 

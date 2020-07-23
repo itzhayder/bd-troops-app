@@ -6,6 +6,10 @@
   background-color: #6CD36C;
 }
 
+.bgDefeat {
+  background-color: rgb(248, 49, 99);
+}
+
 .fontColorVictory {
   color: #6CD36C;
 }
