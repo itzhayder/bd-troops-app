@@ -96,8 +96,9 @@ app.get("/", (req, res, next) => {
       })
     )
     .catch((err) => {
-      res.send({
+      res.json({
         status: "error",
+        code: err.code,
         err: err,
       });
     });
