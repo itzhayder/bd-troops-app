@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "../../node_modules/axios";
 import useSWR from 'swr';
+import socketIoClient from 'socket.io-client';
 
 // import components
 import ClanInfo from "./components/clanInfo/clanInfo";
@@ -10,6 +11,23 @@ import TopDonators from "./components/topDonators/topDonators";
 import ComingSoon from "./components/comingSoon/comingSoon";
 
 const App = () => {
+  const [isUpdated, setIsUpdated] = useState(false);
+  const [data, setData] = useState(undefined);
+  const [error, setError] = useState(null);
+
+  const endpoint = 'http://localhost:5000';
+  const socket = socketIoClient(endpoint);
+
+  socket.on('msg', msg => {
+    console.log(msg);
+  });
+
+  useEffect(() => {
+    axios.get(endpoint)
+      .then(data => {
+        setData(data.data);
+      })
+  }, [isUpdated]);
 
   // useEffect(() => {
   //   const onFocus = () => {
@@ -23,23 +41,23 @@ const App = () => {
 
   // const [isDisconnected, setIsDisconnected] = useState(false);
   
-  const { data, error } = useSWR('http://localhost:5000',
-    url => {
-      return axios.get(url)
-        .then(res => {
-          if (res.data.status === 'error') {
-            throw new Error('internet issue');
-          }
-          return res.data;
-        })
-    },
-    { refreshInterval: 5000, focusThrottleInterval: 5000 }
-  );
+  // const { data, error } = useSWR('http://localhost:5000',
+  //   url => {
+  //     return axios.get(url)
+  //       .then(res => {
+  //         if (res.data.status === 'error') {
+  //           throw new Error('internet issue');
+  //         }
+  //         return res.data;
+  //       })
+  //   },
+  //   { revalidateOnFocus: false }
+  // );
 
   console.log('---------- Rendered -------------');
 
   console.log('data outside swr: ', data);
-  console.log(error);
+  console.log('Error in frontend: ',error);
 
   let rootApp;
 
