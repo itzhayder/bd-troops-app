@@ -32,10 +32,14 @@ const App = () => {
       console.log(msg);
     });
 
-    socket.on('dataPoll', dataPoll => {
-      console.log(dataPoll);
-      setData(dataPoll);
+    socket.on('data', newData => {
+      console.log(newData);
+      setData(newData);
     });
+
+    // socket.on('reconnecting', () => {
+    //   console.log('reconnecting');
+    // })
 
     return () => socket.disconnect();
     
