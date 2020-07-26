@@ -1,36 +1,40 @@
 const axios = require('axios');
 
-module.exports.fetchAPI = new Promise((resolve, reject) => {
-  axios
-    .all([getClanInfo(), getCurrentWar(), getWarLog()])
-    .then(
-      axios.spread((clanInfo, currentWar, warlog) => {
-        console.log('data fetched in fetchAPI');
-        // console.log(clanInfo.data);
-        const result = { 
-          clanInfo: clanInfo.data, 
-          currentWar: currentWar.data,
-          warlog: warlog.data
-        };
+module.exports.fetchAPI = () => {
+  console.log('in fetchAPI');
+  return new Promise((resolve, reject) => {
+    axios
+      .all([getClanInfo(), getCurrentWar(), getWarLog()])
+      .then(
+        axios.spread((clanInfo, currentWar, warlog) => {
+          console.log('data fetched in fetchAPI');
+          // console.log(clanInfo.data);
+          const result = { 
+            clanInfo: clanInfo.data, 
+            currentWar: currentWar.data,
+            warlog: warlog.data
+          };
 
-        resolve(result);
-        // res.setHeader("Content-Type", "application/json");
+          resolve(result);
+          // res.setHeader("Content-Type", "application/json");
+          // res.json({
+          //   clanInfo: clanInfo.data,
+          //   currentWar: currentWar.data,
+          //   warlog: warlog.data,
+          // });
+        })
+      )
+      .catch((err) => {
+        console.log('there is an error in fetchAPI');
+        reject(err);
         // res.json({
-        //   clanInfo: clanInfo.data,
-        //   currentWar: currentWar.data,
-        //   warlog: warlog.data,
+        //   status: "error",
+        //   code: err.code,
+        //   err: err,
         // });
-      })
-    )
-    .catch((err) => {
-      reject(err);
-      // res.json({
-      //   status: "error",
-      //   code: err.code,
-      //   err: err,
-      // });
-    });
-});
+      });
+  })
+}
 
 // get clan info from api
 function getClanInfo() {

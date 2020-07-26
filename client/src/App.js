@@ -11,23 +11,35 @@ import TopDonators from "./components/topDonators/topDonators";
 import ComingSoon from "./components/comingSoon/comingSoon";
 
 const App = () => {
-  const [isUpdated, setIsUpdated] = useState(false);
   const [data, setData] = useState(undefined);
   const [error, setError] = useState(null);
 
   const endpoint = 'http://localhost:5000';
-  const socket = socketIoClient(endpoint);
-
-  socket.on('msg', msg => {
-    console.log(msg);
-  });
 
   useEffect(() => {
+    console.log('useEffect run');
     axios.get(endpoint)
       .then(data => {
         setData(data.data);
       })
-  }, [isUpdated]);
+      .catch(err => {
+        setError(err);
+      });
+
+    const socket = socketIoClient(endpoint);
+
+    socket.on('msg', msg => {
+      console.log(msg);
+    });
+
+    socket.on('dataPoll', dataPoll => {
+      console.log(dataPoll);
+      setData(dataPoll);
+    });
+
+    return () => socket.disconnect();
+    
+  }, []);
 
   // useEffect(() => {
   //   const onFocus = () => {
