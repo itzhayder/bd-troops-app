@@ -1,7 +1,7 @@
 const axios = require('axios');
 const { handleData } = require('./handleData');
 
-async function fetchAPI(prevData, io) {
+async function fetchAPI(io, client) {
   console.log('in fetchAPI');
 
   try {
@@ -9,16 +9,16 @@ async function fetchAPI(prevData, io) {
     const response = await axios.all([getClanInfo(), getCurrentWar(), getWarLog()]);
     const currData = { clanInfo: response[0].data, currentWar: response[1].data, warlog: response[2].data };
 
-    // compare previous and current data, and send updated data to client
-    handleData(prevData, currData, io);
+    // compare cache data and current data, and send updated data to client
+    handleData(currData, io, client);
   } catch (err) {
     // catch error while fetching
     console.log('there is an error in fetchAPI', err); // debug
   } finally {
-    // call fetchAPI every 10 seconds interval
-    console.log('------- Finally ----------'); // debug
+    // call fetchAPI every 20 seconds interval
+    console.log('------- Finally Run ----------'); // debug
     setTimeout(() => {
-      fetchAPI(prevData, io);
+      fetchAPI(io, client);
     }, 20000);
   }
 }

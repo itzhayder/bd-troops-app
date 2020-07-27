@@ -11,14 +11,13 @@ const  fetchAPI  = require('./utils/fetchAPI');
 
 
 // ================================================
-// initialize the data in cache
+// initialize redis
 // ================================================
-// const client = redis.createClient();
-// let cacheUpdated = false;
+const client = redis.createClient();
 
-// client.on('error', err => {
-//   console.log('Redis client error',err);
-// });
+client.on('error', err => {
+  console.log('Redis client error',err);
+});
 
 
 // ================================================
@@ -35,14 +34,12 @@ const limiter = rateLimit({
   max: 100 // limit each IP to 100 requests per windowMs
 });
 
-let prevData = {};
-
 
 // ================================================
 // middlewars
 // ================================================
-app.use(cors());
-app.use(limiter);
+app.use(cors()); // give access to all domain
+app.use(limiter); // limit request for an IP address
 app.use(
   express.urlencoded({
     extended: true,
@@ -64,16 +61,20 @@ io.on('connection', socket => {
 
 
 // ================================================
-// start fetching when app starts
+// start fetching data when app starts
 // ================================================
-fetchAPI(prevData, io);
+fetchAPI(io, client);
 
 
 // ================================================
 // routes
 // ================================================
 app.get("/", (req, res) => {
-  res.json(prevData);
+  client.get('data', (err, cacheData) => {
+    if (err) return res.json({status: 'error', err});
+
+    res.json(JSON.parse(cacheData));
+  });
 });
 
 
@@ -88,6 +89,7 @@ app.get("/", (req, res) => {
 //   });
 // }
 
+// listening the app on given port. ex: http://localhost:port
 server.listen(PORT, () => {
   console.log(`server is running on port ${PORT}`);
 });

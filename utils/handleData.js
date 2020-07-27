@@ -1,21 +1,21 @@
 const equal = require('fast-deep-equal');
-const { default: currentWar } = require('../client/src/components/currentWar/currentWar');
 
-module.exports.handleData = (prevData, currData, io) => {
-  // compare prevData and currentData
-  // returns true or false
-  const isEqual = equal(currData, prevData);
+module.exports.handleData = (currData, io, client) => { 
+  client.get('data', (err, cacheData) => {
+    if (err) throw new Error('there is an error to get data from cache');
 
-  if (!isEqual) {
-    // update prev data
-    // const currDataInString = JSON.stringify(currData);
-    // prevData = JSON.parse(currDataInString);
-    prevData = currData;
-    console.log('previous data updated'); // debug
+    // compare currData and cacheData
+    const isEqual = equal(currData, JSON.parse(cacheData)); // returns true or false
 
-    // send fresh or updated data to all client
-    io.emit('data', currData);
-  } else {
-    console.log('is EQUAL'); // debug
-  }
+    if (!isEqual) {
+      // if data are different
+      // update cache data
+      client.set('data', JSON.stringify(currData), () => {
+        console.log('cached Updated'); // debug
+      });
+
+      // send fresh or latest data to all connected client
+      io.emit('data', currData);
+    }
+  });
 }
