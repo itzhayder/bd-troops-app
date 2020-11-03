@@ -2,7 +2,7 @@ const express = require("express");
 const http = require('http');
 const socketio = require('socket.io');
 const cors = require("cors");
-const path = require("path");
+const mongoose = require('mongoose');
 const rateLimit = require("express-rate-limit");
 const redis = require('redis');
 require("dotenv").config();
@@ -55,7 +55,7 @@ io.on('connection', socket => {
   console.log('new user connected'); // debug
 
   socket.on('disconnect', () => {
-    console.log('disconnected'); // debug
+    console.log('user disconnected'); // debug
   });
 });
 
@@ -76,6 +76,19 @@ app.get("/", (req, res) => {
     res.json(JSON.parse(cacheData));
   });
 });
+
+
+// ================================================
+// connect mongodb
+// ================================================
+mongoose.connect(process.env.MONGODB_URL, {
+  useNewUrlParser: true,
+}, err => {
+  console.log('database connected');
+});
+
+
+
 
 
 // ================================================
