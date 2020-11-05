@@ -4,20 +4,9 @@ const socketio = require('socket.io');
 const cors = require("cors");
 const path = require("path");
 const rateLimit = require("express-rate-limit");
-const redis = require('redis');
+const mongoose = require('mongoose');
+const { connect } = require("http2");
 require("dotenv").config();
-
-const  fetchAPI  = require('./utils/fetchAPI');
-
-
-// ================================================
-// initialize redis
-// ================================================
-const client = redis.createClient();
-
-client.on('error', err => {
-  console.log('Redis client error',err);
-});
 
 
 // ================================================
@@ -55,27 +44,63 @@ io.on('connection', socket => {
   console.log('new user connected'); // debug
 
   socket.on('disconnect', () => {
-    console.log('disconnected'); // debug
+    console.log('user disconnected'); // debug
   });
 });
 
 
 // ================================================
-// start fetching data when app starts
+// mongodb database connection
 // ================================================
-fetchAPI(io, client);
+mongoose.connect(process.env.MONGODB_URI, { 
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}, err => {
+  if (err) {
+    console.log(err);
+  }
+  console.log('database connected');
+});
+
+// look for update in database and pass (emit) it to frontend by socket 
+const connection = mongoose.connection;
+
+connection.once('open', () => {
+  const claninfos = connection.collection('claninfos').watch();
+  const currentwars = connection.collection('currentwars').watch();
+
+  claninfos.on('change', change => {
+    if (change.operationType === 'update') {
+      io.emit('claninfos', change.fullDocument);
+    }
+  });
+
+  currentwars.on('change', change => {
+    if (change.operationType === 'update') {
+      io.emit('currentwars', change.fullDocument);
+    }
+  });
+
+});
 
 
 // ================================================
 // routes
 // ================================================
 app.get("/", (req, res) => {
-  client.get('data', (err, cacheData) => {
-    if (err) return res.json({status: 'error', err});
+  const data = {};
 
-    res.json(JSON.parse(cacheData));
+  connection.collection('claninfos').find({}).toArray((err, result) => {
+    data.clanInfo = result[0];
+
+    connection.collection('currentwars').find({}).toArray((err, result) => {
+      data.currentWar = result[0];
+      res.json(data);
+    });
   });
 });
+
+
 
 
 // ================================================
@@ -88,6 +113,7 @@ app.get("/", (req, res) => {
 //     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 //   });
 // }
+
 
 // listening the app on given port. ex: http://localhost:port
 server.listen(PORT, () => {
