@@ -1,7 +1,6 @@
 const axios = require('axios');
-const { topDonator } = require('../services/topDonator');
-const { clanInfo } = require('../services/clanInfo');
-const { handleData } = require('./handleData');
+const clanInfo = require('../services/clanInfo');
+const currentWar = require('../services/currentWar');
 
 
 async function fetchAPI(client) {
@@ -15,11 +14,8 @@ async function fetchAPI(client) {
     // destructure and rearrange data
 
     // compare cache data and current data, and send updated data to client
-    // handleData(currData, io, client);
-
-    // topDonator(currData.clanInfo, client);
     clanInfo(currData.clanInfo, client);
-    // currentWar(currData.currentWar, client);
+    currentWar(currData.currentWar, client);
 
     // if any data updated then send fresh or latest data to all connected client
   } catch(err) {

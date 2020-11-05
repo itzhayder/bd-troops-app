@@ -42,6 +42,7 @@ const ClanInfoSchema = new Schema({
     id: Number,
     name: String
   },
+  updatedAt: Date
 });
 
 module.exports = mongoose.model('clanInfo', ClanInfoSchema);

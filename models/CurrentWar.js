@@ -13,6 +13,7 @@ const CurrentWarSchema = new Schema({
       small: String,
       medium: String
     },
+    clanLevel: Number,
     attacks: Number,
     stars: Number,
     destructionPercentage: Number,
@@ -23,13 +24,15 @@ const CurrentWarSchema = new Schema({
       small: String,
       medium: String
     },
+    clanLevel: Number,
     attacks: Number,
     stars: Number,
     destructionPercentage: Number,
-  }
+  },
+  updatedAt: Date
 });
 
-module.exports = mongoose.model(currentWar, CurrenWarSchema);
+module.exports = mongoose.model('currentWar', CurrentWarSchema);
 
 
 

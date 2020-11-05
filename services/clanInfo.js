@@ -1,7 +1,7 @@
 const ClanInfo = require('../models/ClanInfo');
 const compareDataAndSet = require('../utils/compareDataAndSet');
 
-exports.clanInfo = async (apiData, client) => {
+const clanInfo = async (apiData, client) => {
   try {
     const data = {
       key: 'clanInfo',
@@ -20,6 +20,8 @@ exports.clanInfo = async (apiData, client) => {
       apiData.memberList.sort((a, b) => {
         return b.donations - a.donations;
       });
+
+      apiData.updatedAt = new Date().toLocaleString();
   
       ClanInfo.countDocuments(async (err, count) => {
         if (count <= 0) {
@@ -39,3 +41,5 @@ exports.clanInfo = async (apiData, client) => {
     console.log(err);
   }
 }
+
+module.exports = clanInfo;
