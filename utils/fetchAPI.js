@@ -1,11 +1,10 @@
 const axios = require('axios');
 const { topDonator } = require('../services/topDonator');
+const { clanInfo } = require('../services/clanInfo');
 const { handleData } = require('./handleData');
 
-let isTopDonatorUpdated = false;
-let isCurrentWarUpdated = false;
 
-async function fetchAPI(io, client) {
+async function fetchAPI(client) {
   console.log('in fetchAPI');
 
   try {
@@ -18,11 +17,12 @@ async function fetchAPI(io, client) {
     // compare cache data and current data, and send updated data to client
     // handleData(currData, io, client);
 
-    isTopDonatorUpdated = topDonator(currData.clanInfo, client);
-    isCurrentWarUpdated = currentWar(currData.currentWar, client);
+    // topDonator(currData.clanInfo, client);
+    clanInfo(currData.clanInfo, client);
+    // currentWar(currData.currentWar, client);
 
     // if any data updated then send fresh or latest data to all connected client
-  } catch (err) {
+  } catch(err) {
     // catch error while fetching
     console.log('there is an error in fetchAPI', err); // debug
   } finally {
@@ -32,8 +32,8 @@ async function fetchAPI(io, client) {
     // write your updated data into the mongodb database
 
     setTimeout(() => {
-      fetchAPI(io, client);
-    }, process.env.TIMEOUT || 40000);
+      fetchAPI(client);
+    }, process.env.TIMEOUT || 20000);
   }
 }
 

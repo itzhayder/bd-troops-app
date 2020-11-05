@@ -25,7 +25,6 @@ client.on('error', err => {
 // ================================================
 const app = express();
 const server = http.createServer(app);
-const io = socketio(server);
 
 const PORT = process.env.PORT || 5000;
 
@@ -49,33 +48,9 @@ app.use(express.json());
 
 
 // ================================================
-// socket.io settings
-// ================================================
-io.on('connection', socket => {
-  console.log('new user connected'); // debug
-
-  socket.on('disconnect', () => {
-    console.log('user disconnected'); // debug
-  });
-});
-
-
-// ================================================
 // start fetching data when app starts
 // ================================================
-fetchAPI(io, client);
-
-
-// ================================================
-// routes
-// ================================================
-app.get("/", (req, res) => {
-  client.get('data', (err, cacheData) => {
-    if (err) return res.json({status: 'error', err});
-
-    res.json(JSON.parse(cacheData));
-  });
-});
+fetchAPI(client);
 
 
 // ================================================
@@ -83,24 +58,11 @@ app.get("/", (req, res) => {
 // ================================================
 mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
+  useUnifiedTopology: true,
 }, err => {
   console.log('database connected');
 });
 
-
-
-
-
-// ================================================
-// if app is in the production
-// ================================================
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static("client/build"));
-
-//   app.get("*", (req, res, next) => {
-//     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-//   });
-// }
 
 // listening the app on given port. ex: http://localhost:port
 server.listen(PORT, () => {

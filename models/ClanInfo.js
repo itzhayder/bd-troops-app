@@ -5,17 +5,43 @@ const ClanInfoSchema = new Schema({
   tag:  String, // String is shorthand for {type: String}
   name: String,
   description: String,
-  memberList: [{ 
-    tag: String, 
-    name: String, 
-    role: String, 
-    donations: Number,
-    donationsReceived: Number 
-  }],
+  location:{
+    id: Number,
+    name: String,
+    isCountry: Boolean,
+    countryCode: String
+  },
   warWins: Number,
   warTies: Number,
   warLosses: Number,
   members: Number,
+  memberList: [
+    {
+      tag: String,
+      name: String,
+      role: String,
+      expLevel: Number,
+      league: {
+        id: Number,
+        name: String,
+        iconUrls: {
+          small: String,
+          tiny: String,
+          medium: String
+        }
+      },
+      trophies: Number,
+      versusTrophies: Number,
+      clanRank: Number,
+      previousClanRank: Number,
+      donations: Number,
+      donationsReceived: Number,
+    }
+  ],
+  warLeague:{
+    id: Number,
+    name: String
+  },
 });
 
-module.exports = mongoose.model(clanInfo, ClanInfoSchema);
+module.exports = mongoose.model('clanInfo', ClanInfoSchema);

@@ -10,4 +10,4 @@ const TopDonatorSchema = new Schema({
   }]
 });
 
-module.exports = mongoose.model(currentWar, TopDonatorSchema);
+module.exports = mongoose.model('topDonator', TopDonatorSchema);
