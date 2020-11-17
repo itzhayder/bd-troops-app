@@ -17,16 +17,14 @@ const currentWar = async (apiData, client) => {
     console.log('change currentWar:', change);
   
     if (change === true) {
-      delete apiData.clan.members;
-      delete apiData.opponent.members;
       apiData.updatedAt = new Date().toLocaleString();
   
       CurrentWar.countDocuments(async (err, count) => {
-        if (count <= 0) {
+        if (count <= 0) { // document doesn't exist
           const savedDoc = await CurrentWar.create(apiData);
           client.set('currentWarDocId', `${savedDoc._id}`);
           console.log('currentWar database initial set');
-        } else {
+        } else { // document exist
           client.get('currentWarDocId', (err, id) => {
             CurrentWar.update({ _id: id }, apiData, { upsert: true }, (err, raw) => {
               console.log('currentWar database updated');
