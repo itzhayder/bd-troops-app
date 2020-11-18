@@ -11,31 +11,40 @@ const clanInfo = async (apiData, client) => {
         updated: 'clanInfo cache updated'
       }
     }
-  
+
     const change = await compareDataAndSet(data, client); // return an object with true (udpated) or false (not udpated)
 
     console.log('change clanInfo:', change);
-  
+
     if (change === true) {
       apiData.memberList.sort((a, b) => {
         return b.donations - a.donations;
       });
 
       apiData.updatedAt = new Date().toLocaleString();
-  
+
       ClanInfo.countDocuments(async (err, count) => {
-        if (count <= 0) {
+        if (count <= 0) { // document doesn't exist in database
           const savedDoc = await ClanInfo.create(apiData);
           client.set('clanInfoDocId', `${savedDoc._id}`);
           console.log('clanInfo database initial set');
-        } else {
-          client.get('clanInfoDocId', (err, id) => {
-            ClanInfo.update({ _id: id }, apiData, { upsert: true }, (err, raw) => {
-              console.log('clanInfo database updated');
-            });
-          })
+        } else { // document exist in database
+          client.get('clanInfoDocId', async (err, id) => {
+            if (id === null) {
+              const resultDocs = await ClanInfo.find({});
+              client.set('clanInfoDocId', `${resultDocs[0]._id}`);
+
+              ClanInfo.updateOne({ _id: resultDocs[0]._id }, apiData, { upsert: true }, (err, raw) => {
+                console.log('clanInfo database updated');
+              });
+            } else {
+              ClanInfo.updateOne({ _id: id }, apiData, { upsert: true }, (err, raw) => {
+                console.log('clanInfo database updated');
+              });
+            }
+          });
         }
-      })
+      });
     }
   } catch (err) {
     console.log(err);

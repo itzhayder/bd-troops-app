@@ -8,16 +8,17 @@
     "npm": "6.9.0"
   },
   "scripts": {
-    "start": "node app.js",
-    "client": "npm run start --prefix client",
-    "dev": "nodemon app.js"
+    "dev-server": "set PORT=6000&& set NODE_ENV=development&& set DB_INDEX=0&& node app.js",
+    "prod-server": "set PORT=6000&& set NODE_ENV=production&& set DB_INDEX=1&&node app.js",
+    "redis": "redis-server",
+    "dev": "concurrently \"npm run redis\" \"npm run dev-server\"",
+    "prod": "concurrently \"npm run redis\" \"npm run prod-server\""
   },
   "keywords": [],
   "author": "Md. Hayder Ali",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
-    "clash-of-clans-api": "^0.6.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

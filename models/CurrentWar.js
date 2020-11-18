@@ -17,6 +17,31 @@ const CurrentWarSchema = new Schema({
     attacks: Number,
     stars: Number,
     destructionPercentage: Number,
+    members: [
+      {
+        tag: String,
+        name: String,
+        townhallLevel: Number,
+        mapPosition: Number,
+        attacks: [
+          {
+            attackerTag: String,
+            defenderTag: String,
+            stars: Number,
+            destructionPercentage: Number,
+            order: Number
+          }
+        ],
+        opponentAttacks: Number,
+        bestOpponentAttack: {
+          attackerTag: String,
+          defenderTag: String,
+          stars: Number,
+          destructionPercentage: Number,
+          order: Number,
+        }
+      }
+    ],
   },
   opponent: {
     name: String,
@@ -28,6 +53,31 @@ const CurrentWarSchema = new Schema({
     attacks: Number,
     stars: Number,
     destructionPercentage: Number,
+    members: [
+      {
+        tag: String,
+        name: String,
+        townhallLevel: Number,
+        mapPosition: Number,
+        attacks: [
+          {
+            attackerTag: String,
+            defenderTag: String,
+            stars: Number,
+            destructionPercentage: Number,
+            order: Number
+          }
+        ],
+        opponentAttacks: Number,
+        bestOpponentAttack: {
+          attackerTag: String,
+          defenderTag: String,
+          stars: Number,
+          destructionPercentage: Number,
+          order: Number,
+        }
+      }
+    ],
   },
   updatedAt: Date
 });

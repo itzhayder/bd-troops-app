@@ -4,8 +4,8 @@ const cors = require("cors");
 const mongoose = require('mongoose');
 const rateLimit = require("express-rate-limit");
 const redis = require('redis');
-require("dotenv").config();
 
+const keys = require('./config/keys');
 const  fetchAPI  = require('./utils/fetchAPI');
 
 
@@ -14,9 +14,14 @@ const  fetchAPI  = require('./utils/fetchAPI');
 // ================================================
 const client = redis.createClient();
 
+client.select(process.env.DB_INDEX, (err, msg) => {
+  console.log('redis client is on database no. :', msg);
+});
+
 client.on('error', err => {
   console.log('Redis client error',err);
 });
+
 
 
 // ================================================
@@ -55,7 +60,7 @@ fetchAPI(client);
 // ================================================
 // connect mongodb
 // ================================================
-mongoose.connect(process.env.MONGODB_URL, {
+mongoose.connect(keys.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }, err => {
@@ -65,5 +70,5 @@ mongoose.connect(process.env.MONGODB_URL, {
 
 // listening the app on given port. ex: http://localhost:port
 server.listen(PORT, () => {
-  console.log(`server is running on port ${PORT}`);
+  console.log(`server is running in ${process.env.NODE_ENV} on port ${PORT}...`);
 });
