@@ -6,7 +6,7 @@ const fetchData = () => async (dispatch) => {
   dispatch({ type: actionTypes.fetchStart });
 
   try {
-    const res = await axios.get('/');
+    const res = await axios.get('/api');
 
     dispatch({ type: actionTypes.fetchCompleted, payload: res.data });
   } catch (error) {

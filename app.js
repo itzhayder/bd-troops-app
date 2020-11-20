@@ -26,7 +26,7 @@ const limiter = rateLimit({
 // ================================================
 // middlewars
 // ================================================
-app.use(cors()); // give access to all domain
+// app.use(cors()); // give access to all domain
 app.use(limiter); // limit request for an IP address
 app.use(
   express.urlencoded({
@@ -34,6 +34,10 @@ app.use(
   })
 );
 app.use(express.json());
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://bd-troops.herokuapp.com/');
+});
 
 
 // ================================================
@@ -85,7 +89,7 @@ connection.once('open', () => {
 // ================================================
 // routes
 // ================================================
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   const data = {};
 
   connection.collection('claninfos').find({}).toArray((err, result) => {
