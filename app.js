@@ -13,9 +13,14 @@ const keys = require('./config/keys');
 // ================================================
 const app = express();
 const server = http.createServer(app);
-const io = socketio(server);
+const io = socketio.listen(server);
 
 const PORT = process.env.PORT || 5000;
+
+// listening the app on given port. ex: http://localhost:port
+server.listen(PORT, () => {
+  console.log(`server is running on port ${PORT}`);
+});
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -35,9 +40,10 @@ app.use(
 );
 app.use(express.json());
 
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', 'https://bd-troops.herokuapp.com/');
-// });
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://bd-troops.herokuapp.com/');
+  next();
+});
 
 
 // ================================================
@@ -115,9 +121,3 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
   });
 }
-
-
-// listening the app on given port. ex: http://localhost:port
-server.listen(PORT, () => {
-  console.log(`server is running on port ${PORT}`);
-});
