@@ -5,3 +5,22 @@
 .fontSemiBold {
   font-weight: 600;
 }
+
+.borderless td,
+.borderless th {
+  border: none;
+
+}
+
+.topDonators__table {
+  height: min-content;
+}
+
+.borderless tr:nth-child(odd) {
+  background-color: rgb(238, 238, 238);
+}
+
+.borderless tr:nth-child(1) {
+  background-color: #fed500;
+  overflow: hidden;
+}

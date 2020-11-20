@@ -1,187 +1,127 @@
-import React from "react";
-import "./currentWar.css";
+import React from 'react';
+import moment from 'moment';
+import Countdown from 'react-countdown';
+import './currentWar.css';
+import Hero from '../../assets/images/current-war-hero.png';
+import Card from '../card/card';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
-import Hero from "../../images/current-war-hero.png";
+const CurrentWar = (props) => {
+  const data = useSelector(state => state.data.data.currentWar);
+  const [countTime, setCountTime] = useState(0);
+  const [refreshTime, setRefreshTime] = useState(false);
+  const [status, setStatus] = useState({ timeStatus: '', battleStatus: '', key: 1 });
 
-const currentWar = (props) => {
-  let title = "";
-  let previousResult = 'Victory';
-  let bgColor = 'bgVictory';
+  useEffect(() => {
+    const myTime = Date.now();
+    // const time = 1605880380152;
+    // const startTime = time;
+    // const endTime = time + 10000;
+    const startTime = new Date(moment(data.startTime).format('llll')).getTime();
+    const endTime = new Date(moment(data.endTime).format('llll')).getTime();
+    
 
-  if (props.currentWar.state === "preparation") {
-    title = "Preparation Day";
-  } else if (props.currentWar.state === "inWar") {
-    title = "Battle Day";
-  } else {
-    title = "No War - Peace";
-  }
+    if (data.state === 'preparation' || data.state === 'inWar') {
+      if (myTime < startTime) {
+        setStatus(prevState => (
+          { ...prevState, 
+            timeStatus: 'remaining',
+            battleStatus: 'Preparation',
+            key: prevState.key + 1
+          }
+        ));
+        setCountTime(startTime);
+      } else if (myTime < endTime) {
+        setStatus(prevState => (
+          { ...prevState, 
+            timeStatus: 'remaining',
+            battleStatus: 'Battle Day',
+            key: prevState.key + 1
+          }
+        ));
+        setCountTime(endTime);
+      } else {
+        setStatus(prevState => (
+          { ...prevState, 
+            timeStatus: 'no cooldown',
+            battleStatus: data.clan?.name ? 'End Battle' : 'No Battle',
+            key: prevState.key + 1
+          }
+        ));
+        setCountTime(new Date().getTime());
+      }   
+    } else {
+      setStatus(prevState => (
+        { ...prevState, 
+          timeStatus: 'no cooldown',
+          battleStatus: 'No Battle',
+        }
+      ));
+      setCountTime(new Date().getTime());
+    }
+    // eslint-disable-next-line
+  }, [refreshTime]);
 
-  if (props.warlog.items[0].result !== "win") {
-    previousResult = "Defeat";
-    bgColor = 'bgDefeat';
-  }
+  const renderer = ({ hours, minutes, seconds }) => {
+    return <span>{hours}h {minutes}m</span>;
+  };
 
   return (
-    <div>
-      <img
-        src={Hero}
-        alt="hero"
-        className="position-absolute hero-image d-none d-sm-block"
-      />
-      <div className="jumbotron jumbotronSelf overflow-hidden">
-        <div className="text-white py-2 text-center bgPreparation fontSemiBold">
-          {title}
+    <Card title='Current War' cardStyle='mr-lg-3' >
+      <div className='d-flex justify-content-between align-items-center bgPreparation p-3 rounded-top position-relative'>
+        <img
+          src={Hero}
+          alt="hero"
+          className="position-absolute hero-image"
+        />
+        <div className='currentWar__time d-flex flex-column'>
+          <span className='text-white font-weight-bold'>
+            {countTime && <Countdown key={status.key} date={countTime} renderer={renderer} onComplete={() => {
+              setCountTime(0);
+              setRefreshTime(!refreshTime);
+            }} />}
+          </span>
+          <span className='text-white currentWar__remaining'>{status.timeStatus}</span>
         </div>
 
-        <div className="row m-0 mt-4">
-          <div className="col-6 d-flex p-0 justify-content-end">
-            <div className="align-self-center textSmall">
-              {(
-                (props.currentWar.clan.destructionPercentage / 100) *
-                100
-              ).toFixed(2)}
-              %
-            </div>
-            <div className="mx-4 scoreSelf">{props.currentWar.clan.stars}</div>
-          </div>
+        <h6 className='text-white font-weight-bold m-0 position-absolute currentWar__battleStatus'>{status.battleStatus}</h6>
 
-          <div className="col-6 d-flex p-0">
-            <div className="mx-4 scoreSelf">
-              {props.currentWar.opponent.stars}
-            </div>
-            <div className="align-self-center textSmall">
-              {(
-                (props.currentWar.opponent.destructionPercentage / 100) *
-                100
-              ).toFixed(2)}
-              %
-            </div>
-          </div>
-        </div>
-
-        <div className="row m-0 my-3">
-          <div className="col-6 d-flex p-0 justify-content-end">
-            <img
-              src={props.currentWar.clan.badgeUrls.small}
-              className="imageSelf"
-              alt="badge icon"
-            />
-            <div className="align-self-center mr-4 ml-3 fontSemiBold">
-              {props.currentWar.clan.name}
-            </div>
-          </div>
-
-          <div className="col-6 d-flex p-0">
-            <div className="align-self-center ml-4 mr-3 fontSemiBold">
-              {props.currentWar.opponent.name}
-            </div>
-            <img
-              src={props.currentWar.opponent.badgeUrls.small}
-              className="imageSelf"
-              alt="badge icon"
-            />
-          </div>
-        </div>
-
-        {/* <hr className="my-2 mx-5" /> */}
-
-        <div className="text-center">
-          <button
-            type="button"
-            className="btn btn-link fontColorVictory mx-auto my-5 "
-            data-toggle="modal"
-            data-target="#exampleModalCenter"
-          >
-            Previous War
-          </button>
-        </div>
-
-        <div
-          className="modal fade"
-          id="exampleModalCenter"
-          tabIndex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalCenterTitle"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog modal-dialog-centered" role="document">
-            <div className="modal-content modalSelf">
-              <div className="heading text-white m-0 h-auto">
-                Previous War
-                <button
-                  type="button"
-                  className="close px-3 py-2 btn text-light"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="jumbotron jumbotronSelf overflow-hidden">
-                <div className={`text-white py-2 text-center ${bgColor} fontSemiBold`}>
-                  {previousResult}
-                </div>
-
-                <div className="row m-0 mt-4">
-                  <div className="col-6 d-flex p-0 justify-content-end">
-                    <div className="align-self-center textSmall">
-                      {(
-                        (props.warlog.items[0].clan.destructionPercentage /
-                          100) *
-                        100
-                      ).toFixed(2)}
-                      %
-                    </div>
-                    <div className="mx-4 scoreSelf">
-                      {props.warlog.items[0].clan.stars}
-                    </div>
-                  </div>
-
-                  <div className="col-6 d-flex p-0">
-                    <div className="mx-4 scoreSelf">
-                      {props.warlog.items[0].opponent.stars}
-                    </div>
-                    <div className="align-self-center textSmall">
-                      {(
-                        (props.warlog.items[0].opponent.destructionPercentage /
-                          100) *
-                        100
-                      ).toFixed(2)}
-                      %
-                    </div>
-                  </div>
-                </div>
-
-                <div className="row m-0 my-3">
-                  <div className="col-6 d-flex p-0 justify-content-end">
-                    <img
-                      src={props.warlog.items[0].clan.badgeUrls.small}
-                      className="imageSelf"
-                      alt="badge icon"
-                    />
-                    <div className="align-self-center mr-4 ml-3 fontMedium">
-                      {props.warlog.items[0].clan.name}
-                    </div>
-                  </div>
-
-                  <div className="col-6 d-flex p-0">
-                    <div className="align-self-center ml-4 mr-3 fontMedium">
-                      {props.warlog.items[0].opponent.name}
-                    </div>
-                    <img
-                      src={props.warlog.items[0].opponent.badgeUrls.small}
-                      className="imageSelf"
-                      alt="badge icon"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div style={{ width: '47px' }}></div>
       </div>
-    </div>
-  );
-};
 
-export default currentWar;
+      {
+        status.battleStatus === 'End Battle' ? 
+        <div className='text-center py-3 px-3'>
+          <h4>No battle right now!</h4>
+          <p>Check last war details.</p>
+          <p><u>link here</u></p>
+        </div> : 
+        <div className='px-3 py-4'>
+          <div className='d-flex align-items-center my-2'>
+            <img src={data.clan.badgeUrls.small} alt="clan-badge" className='currentWar__badge' />
+            <h6 className='m-0 font-weight-bold mr-auto ml-1'>{data.clan.name}</h6>
+
+            <div className='d-flex justify-content-between align-items-center p-3 currentWar__star-container rounded'>
+              <h6 className='m-0 font-weight-bold'>{data.clan.stars}</h6>
+              <span className='currentWar__percentage text-right'>{data.clan.destructionPercentage.toFixed(2)}</span>
+            </div>
+          </div>
+
+          <div className='d-flex align-items-center my-2'>
+            <img src={data.opponent.badgeUrls.small} alt="clan-badge" className='currentWar__badge' />
+            <h6 className='m-0 font-weight-bold mr-auto ml-1'>{data.opponent.name}</h6>
+
+            <div className='d-flex justify-content-between align-items-center p-3 currentWar__star-container rounded'>
+              <h6 className='m-0 font-weight-bold'>{data.opponent.stars}</h6>
+              <span className='currentWar__percentage text-right'>{data.opponent.destructionPercentage.toFixed(2)}</span>
+            </div>
+          </div>
+        </div>
+      }
+    </Card>
+  )
+}
+
+export default CurrentWar;

@@ -5,8 +5,7 @@ const cors = require("cors");
 const path = require("path");
 const rateLimit = require("express-rate-limit");
 const mongoose = require('mongoose');
-const { connect } = require("http2");
-require("dotenv").config();
+const keys = require('./config/keys');
 
 
 // ================================================
@@ -52,7 +51,7 @@ io.on('connection', socket => {
 // ================================================
 // mongodb database connection
 // ================================================
-mongoose.connect(process.env.MONGODB_URI, { 
+mongoose.connect(keys.MONGODB_URI, { 
   useNewUrlParser: true,
   useUnifiedTopology: true
 }, err => {
@@ -71,16 +70,15 @@ connection.once('open', () => {
 
   claninfos.on('change', change => {
     if (change.operationType === 'update') {
-      io.emit('claninfos', change.fullDocument);
+      io.emit('claninfos', change.updateDescription.updatedFields);
     }
   });
 
   currentwars.on('change', change => {
     if (change.operationType === 'update') {
-      io.emit('currentwars', change.fullDocument);
+      io.emit('currentwars', change.updateDescription.updatedFields);
     }
   });
-
 });
 
 
@@ -106,13 +104,13 @@ app.get("/", (req, res) => {
 // ================================================
 // if app is in the production
 // ================================================
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static("client/build"));
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
 
-//   app.get("*", (req, res, next) => {
-//     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-//   });
-// }
+  app.get("*", (req, res, next) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  });
+}
 
 
 // listening the app on given port. ex: http://localhost:port

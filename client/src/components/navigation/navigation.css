@@ -1,0 +1,15 @@
+.navigation__container {
+  margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+  .navigation__container {
+    margin-bottom: 40px;
+  }
+}
+
+@media (min-width: 992px) {
+  .navigation__container {
+    margin-bottom: 45px;
+  }
+}

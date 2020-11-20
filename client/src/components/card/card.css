@@ -1,0 +1,40 @@
+.card__container {
+  width: auto;
+}
+
+.card__children {
+  height: 190px;
+}
+
+@media (min-width: 768px) {
+  .card__children {
+    height: 260px;
+  }
+
+  /* .card__container {
+    width: 600px;
+  } */
+}
+
+@media (min-width: 992px) {
+  .card__container {
+    width: 600px;
+  }
+}
+
+/* 
+@media (min-width: 1200px) {
+  .card__container {
+    width: 600px;
+  }
+} */
+
+/* .card__container {
+  max-width: 100%;
+}
+
+@media (min-width: 992px) {
+  .card__container {
+    max-width: 310px;
+  }
+} */

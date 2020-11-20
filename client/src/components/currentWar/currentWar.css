@@ -1,5 +1,58 @@
+.currentWar__time {
+  /* height: 35px; */
+  line-height: 1;
+}
+
+.currentWar__battleStatus {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.currentWar__remaining {
+  font-size: 0.7rem;
+}
+
+.currentWar__percentage {
+  font-size: 0.7rem;
+}
+
+.currentWar__star-container {
+  background-color: #ececec;
+  width: 100px;
+}
+
+/* .currentWar__clanContainer {
+  height: 180px;
+} */
+
+.hero-image {
+  width: 100px;
+  right: 10px;
+  top: -60px;
+}
+
+.currentWar__badge {
+  width: 48px;
+}
+
+@media (min-width: 768px) {
+  .currentWar__star-container {
+    width: 120px;
+  }
+
+  .hero-image {
+    width: 150px;
+    top: -100px;
+  }
+
+  .currentWar__badge {
+    width: 70px;
+  }
+}
+
 .bgPreparation {
-  background-color: #824EFF;
+  background-color: #365afd;
 }
 
 .bgVictory {
@@ -56,12 +109,6 @@
 .pngSelf {
   width: 25px;
   height: auto;
-}
-
-.hero-image {
-  width: 170px;
-  right: 0px;
-  top: -25px;
 }
 
 .pwButton {

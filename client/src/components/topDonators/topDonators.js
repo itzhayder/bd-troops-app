@@ -1,44 +1,28 @@
-import React from "react";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import Card from '../card/card';
+import './topDonators.css';
 
-const topDonators = (props) => {
-  const memberList = props.memberList.sort((a, b) => b.donations - a.donations).slice(0, 5);
-
-  const topDonators = memberList.map((member, i) => {
-    return (
-      <tr key={i}>
-        <th scope="row" className="text-center fontSemiBold">
-          {i + 1}
-        </th>
-        <td>{member.name}</td>
-        <td className="text-center">{member.donations}</td>
-        <td className="text-center">{member.donationsReceived}</td>
-      </tr>
-    );
-  });
+const TopDonators = () => {
+  const donators = useSelector(state => state.data.data.clanInfo.memberList.slice(0, 5));
 
   return (
-    <div className="jumbotron jumbotronSelf overflow-auto px-3 py-4 scroll-self">
-      <table className="table table-borderless table-sm">
-        <thead>
-          <tr>
-            <th scope="col" className="text-center fontSemiBold">
-              No.
-            </th>
-            <th scope="col" className="fontSemiBold">
-              Name
-            </th>
-            <th scope="col" className="text-center fontSemiBold">
-              Donated
-            </th>
-            <th scope="col" className="text-center fontSemiBold">
-              Received
-            </th>
-          </tr>
-        </thead>
-        <tbody>{topDonators}</tbody>
-      </table>
-    </div>
-  );
-};
+    <Card title='Top Donators' cardStyle='ml-lg-3' >
+      <div className='rounded overflow-hidden topDonators__table'> 
+        <table className='table borderless'>
+          <tbody>
+            {donators.map((donator, i) => 
+              <tr key={i}>
+                <td className='font-weight-bold'>{i+1}.</td>
+                <td className='font-weight-bold'>{donator.name}</td>
+                <td className='font-weight-bold'>{donator.donations}</td>
+              </tr>
+            )}
+          </tbody>
+       </table>
+      </div>
+    </Card>
+  )
+}
 
-export default topDonators;
+export default TopDonators;
