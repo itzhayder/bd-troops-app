@@ -35,9 +35,9 @@ app.use(
 );
 app.use(express.json());
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://bd-troops.herokuapp.com/');
-});
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', 'https://bd-troops.herokuapp.com/');
+// });
 
 
 // ================================================
