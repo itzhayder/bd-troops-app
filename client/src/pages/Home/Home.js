@@ -3,7 +3,7 @@ import moment from 'moment'
 import socketIoClient from 'socket.io-client';
 import { useSelector, useDispatch } from 'react-redux'
 import { updateClanInfo,updateCurrentWar } from '../../store/actions/updateData';
-import { baseURL } from '../../config/config'
+// import { baseURL } from '../../config/config'
 
 import Navigation from '../../components/navigation/navigation';
 import CurrentWar from '../../components/currentWar/currentWar';
@@ -15,7 +15,7 @@ const Home = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const socket = socketIoClient(baseURL);
+    const socket = socketIoClient('/');
 
     // get updated push data from server
     socket.on('claninfos', newData => {
