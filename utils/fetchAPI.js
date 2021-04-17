@@ -19,7 +19,7 @@ async function fetchAPI(client) {
     // catch error while fetching
     console.log('there is an error in fetchAPI', err); // debug
   } finally {
-    // call fetchAPI (do the same process) every 30 seconds interval
+    // call fetchAPI (do the same process for) every 30 seconds interval
     console.log('------- in Finally ----------'); // debug
 
     setTimeout(() => {
