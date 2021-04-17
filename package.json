@@ -1,34 +1,34 @@
 {
-  "name": "bd-troops",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "engines": {
-    "node": "10.16.3",
-    "npm": "6.9.0"
-  },
-  "scripts": {
-    "dev-server": "set PORT=6000&& set NODE_ENV=development&& set DB_INDEX=0&& node app.js",
-    "prod-server": "set PORT=6000&& set NODE_ENV=production&& set DB_INDEX=1&&node app.js",
-    "redis": "redis-server",
-    "dev": "concurrently \"npm run redis\" \"npm run dev-server\"",
-    "prod": "concurrently \"npm run redis\" \"npm run prod-server\""
-  },
-  "keywords": [],
-  "author": "Md. Hayder Ali",
-  "license": "ISC",
-  "dependencies": {
-    "axios": "^0.19.2",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "express-rate-limit": "^5.1.3",
-    "fast-deep-equal": "^3.1.3",
-    "mongoose": "^5.10.11",
-    "redis": "^3.0.2",
-    "socket.io": "^2.3.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.3"
-  }
+    "name": "bd-troops",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "engines": {
+        "node": "10.16.3",
+        "npm": "6.9.0"
+    },
+    "scripts": {
+        "dev-server": "set PORT=6000&& set NODE_ENV=development&& set DB_INDEX=0&& node app.js",
+        "prod-server": "PORT=6000 NODE_ENV=production DB_INDEX=1 node app.js",
+        "redis": "redis-server",
+        "dev": "concurrently \"npm run redis\" \"npm run dev-server\"",
+        "prod": "concurrently \"npm run redis\" \"npm run prod-server\""
+    },
+    "keywords": [],
+    "author": "Md. Hayder Ali",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^0.19.2",
+        "cors": "^2.8.5",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "express-rate-limit": "^5.1.3",
+        "fast-deep-equal": "^3.1.3",
+        "mongoose": "^5.10.11",
+        "redis": "^3.0.2",
+        "socket.io": "^2.3.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.3"
+    }
 }
