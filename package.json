@@ -9,10 +9,12 @@
     },
     "scripts": {
         "dev-server": "set PORT=6000&& set NODE_ENV=development&& set DB_INDEX=0&& node app.js",
-        "prod-server": "PORT=6000 NODE_ENV=production DB_INDEX=1 node app.js",
+        "prod-server-windows": "set PORT=6000&& set NODE_ENV=production&& set DB_INDEX=1&& node app.js",
+        "prod-server-linux": "PORT=6000 NODE_ENV=production DB_INDEX=1 node app.js",
         "redis": "redis-server",
         "dev": "concurrently \"npm run redis\" \"npm run dev-server\"",
-        "prod": "concurrently \"npm run redis\" \"npm run prod-server\""
+        "prod-windows": "concurrently \"npm run redis\" \"npm run prod-server-windows\"",
+        "prod-linux": "concurrently \"npm run redis\" \"npm run prod-server-linux\""
     },
     "keywords": [],
     "author": "Md. Hayder Ali",
