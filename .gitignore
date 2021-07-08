@@ -4,3 +4,4 @@ rest.rest
 data
 config/dev.js
 config/prod.js
+dump.rdb

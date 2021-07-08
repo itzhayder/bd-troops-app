@@ -14,7 +14,8 @@
         "redis": "redis-server",
         "dev": "concurrently \"npm run redis\" \"npm run dev-server\"",
         "prod-windows": "concurrently \"npm run redis\" \"npm run prod-server-windows\"",
-        "prod-linux": "concurrently \"npm run redis\" \"npm run prod-server-linux\""
+        "prod-linux": "concurrently \"npm run redis\" \"npm run prod-server-linux\"",
+        "lint-check": "eslint . --ignore-path ./.gitignore"
     },
     "keywords": [],
     "author": "Md. Hayder Ali",
@@ -31,6 +32,12 @@
         "socket.io": "^2.3.0"
     },
     "devDependencies": {
-        "nodemon": "^2.0.3"
+        "eslint": "^7.30.0",
+        "eslint-config-airbnb-base": "^14.2.1",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-import": "^2.23.4",
+        "eslint-plugin-prettier": "^3.4.0",
+        "nodemon": "^2.0.3",
+        "prettier": "^2.3.2"
     }
 }

@@ -1,98 +1,89 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+
 const { Schema } = mongoose;
 
 const CurrentWarSchema = new Schema({
-  state: String,
-  teamSize: Number,
-  preparationStartTime: String,
-  startTime: String,
-  endTime: String,
-  clan: {
-    name: String,
-    badgeUrls: {
-      small: String,
-      medium: String
-    },
-    clanLevel: Number,
-    attacks: Number,
-    stars: Number,
-    destructionPercentage: Number,
-    members: [
-      {
-        tag: String,
+    state: String,
+    teamSize: Number,
+    preparationStartTime: String,
+    startTime: String,
+    endTime: String,
+    clan: {
         name: String,
-        townhallLevel: Number,
-        mapPosition: Number,
-        attacks: [
-          {
-            attackerTag: String,
-            defenderTag: String,
-            stars: Number,
-            destructionPercentage: Number,
-            order: Number
-          }
+        badgeUrls: {
+            small: String,
+            medium: String,
+        },
+        clanLevel: Number,
+        attacks: Number,
+        stars: Number,
+        destructionPercentage: Number,
+        members: [
+            {
+                tag: String,
+                name: String,
+                townhallLevel: Number,
+                mapPosition: Number,
+                attacks: [
+                    {
+                        attackerTag: String,
+                        defenderTag: String,
+                        stars: Number,
+                        destructionPercentage: Number,
+                        order: Number,
+                    },
+                ],
+                opponentAttacks: Number,
+                bestOpponentAttack: {
+                    attackerTag: String,
+                    defenderTag: String,
+                    stars: Number,
+                    destructionPercentage: Number,
+                    order: Number,
+                },
+            },
         ],
-        opponentAttacks: Number,
-        bestOpponentAttack: {
-          attackerTag: String,
-          defenderTag: String,
-          stars: Number,
-          destructionPercentage: Number,
-          order: Number,
-        }
-      }
-    ],
-  },
-  opponent: {
-    name: String,
-    badgeUrls: {
-      small: String,
-      medium: String
     },
-    clanLevel: Number,
-    attacks: Number,
-    stars: Number,
-    destructionPercentage: Number,
-    members: [
-      {
-        tag: String,
+    opponent: {
         name: String,
-        townhallLevel: Number,
-        mapPosition: Number,
-        attacks: [
-          {
-            attackerTag: String,
-            defenderTag: String,
-            stars: Number,
-            destructionPercentage: Number,
-            order: Number
-          }
+        badgeUrls: {
+            small: String,
+            medium: String,
+        },
+        clanLevel: Number,
+        attacks: Number,
+        stars: Number,
+        destructionPercentage: Number,
+        members: [
+            {
+                tag: String,
+                name: String,
+                townhallLevel: Number,
+                mapPosition: Number,
+                attacks: [
+                    {
+                        attackerTag: String,
+                        defenderTag: String,
+                        stars: Number,
+                        destructionPercentage: Number,
+                        order: Number,
+                    },
+                ],
+                opponentAttacks: Number,
+                bestOpponentAttack: {
+                    attackerTag: String,
+                    defenderTag: String,
+                    stars: Number,
+                    destructionPercentage: Number,
+                    order: Number,
+                },
+            },
         ],
-        opponentAttacks: Number,
-        bestOpponentAttack: {
-          attackerTag: String,
-          defenderTag: String,
-          stars: Number,
-          destructionPercentage: Number,
-          order: Number,
-        }
-      }
-    ],
-  },
-  updatedAt: Date
+    },
+    updatedAt: Date,
 });
 
-module.exports = mongoose.model('currentWar', CurrentWarSchema);
-
-
-
-
-
-
-
-
-
-
+module.exports = mongoose.model("currentWar", CurrentWarSchema);
 
 // const currentWarSchema = new Schema({
 //   state: String,
